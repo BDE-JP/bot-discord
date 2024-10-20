@@ -101,15 +101,30 @@ class Client(discord.Client):
 
         await self.manage_status_role.update(after.activity, after)
 
+    async def on_raw_reaction_add(self, payload):
+
+        if payload.guild_id != self.guild.id:
+            return
+
+        verification = security.get_verification_message(payload.message_id)
+
+        if not verification:
+            return
+
+        if payload.emoji == "✅":
+            await verification.accept(self.guild)
+        elif payload.emoji == "❌":
+            await verification.deny(self.guild)
+
     async def on_message(self, message):
 
         if message.author.bot:
             return
 
-        IDENTIFICATION_CHANNEL = self.guild.get_channel(None)
-        VERIFICATION_CHANNEL = self.guild.get_channel(None)
+        IDENTIFICATION_CHANNEL = self.guild.get_channel(1296031913836019712)
+        VERIFICATION_CHANNEL = self.guild.get_channel(1295495398542282762)
 
-        if message.channel.id == IDENTIFICATION_CHANNEL:
+        if message.channel == IDENTIFICATION_CHANNEL:
             await security.verification(message, VERIFICATION_CHANNEL)
 
         await commands.get(self, message, 'discord', prefixs=['!'])

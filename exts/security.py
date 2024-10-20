@@ -5,19 +5,68 @@
 
 async def verification(message, channel):
 
-	try: prenom, nom, identifiant = message.content.split(' ')
-	except:
-		prenom = nom = identifiant = None
+    try: prenom, nom, identifiant = message.content.split(' ')
+    except:
+        prenom = nom = identifiant = None
 
-	await message.delete()
+    await message.delete()
 
-	if not identifiant:
-		return
+    if not identifiant:
+        return
 
-	database.identities.add((message.author.id, prenom, nom, identifiant))
+    description = (
+        f"[ ] - <@{message.author.id}>"
+        + f"\n{nom.upper()} {prenom} n°{identifiant}"
+    )
 
-	description = (
-		""
-	)
+    await (await message.channel.send("✅")).delete(delay=30)
 
-	await channel.send(embed=discord.Embed(description=description))
+    msg = await channel.send(embed=discord.Embed(description=description))
+
+    await msg.add_reaction("✅")
+    await msg.add_reaction("❌")
+
+    database.verifications.add(
+        (msg.channel.id, msg.id, message.author.id, prenom, nom, identifiant)
+    )
+
+
+def get_verification_message(message_id:int):
+
+    data = database.verifications.get_with_message(message_id).fetchone()
+
+    if data:
+        return Verification(data)
+
+
+class Verification:
+
+    def __init__(self, data:tuple):
+
+        (
+            self.id,
+            self.channel_id,
+            self.message_id,
+            self.user_id,
+            self.first_name,
+            self.last_name,
+            self.identifiant
+        ) = data
+
+    async def accept(self, guild):
+        database.users.identity(
+            (self.first_name, self.last_name, self.identifiant, self.user_id)
+        )
+
+        database.verifications.remove(self.id)
+
+        description = (
+            f"[✅] - <@{self.user_id}>"
+            + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
+        )
+
+        channel = guild.get_channel(self.channel_id) 
+        message = channel.get_partial_message(self.message_id)
+
+        await message.edit(embed=discord.Embed(description=description))
+        await message.clear_reactions()
