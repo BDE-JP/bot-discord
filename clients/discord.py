@@ -114,9 +114,9 @@ class Client(discord.Client):
         if not verification:
             return
 
-        if payload.emoji == "✅":
+        if str(payload.emoji) == "✅":
             await verification.accept(self.guild)
-        elif payload.emoji == "❌":
+        elif str(payload.emoji) == "❌":
             await verification.deny(self.guild)
 
     async def on_message(self, message):

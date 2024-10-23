@@ -169,3 +169,5 @@ database/__init__.py
 *.db
 ignores/*
 __base__.py
+
+database/database.db

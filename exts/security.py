@@ -85,8 +85,15 @@ class Verification:
 
     async def update_message(self, guild, description:str):
 
-        channel = guild.get_channel(self.channel_id) 
+        channel = guild.get_channel(self.channel_id)
+
+        if not channel:
+            return
+
         message = channel.get_partial_message(self.message_id)
+
+        if not message:
+            return
 
         await message.edit(embed=discord.Embed(description=description))
         await message.clear_reactions()

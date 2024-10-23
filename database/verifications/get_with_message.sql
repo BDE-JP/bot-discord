@@ -7,4 +7,4 @@ SELECT
 	last_name,
 	identifier
 FROM verifications
-WHEN message_id = ?
+WHERE message_id = ?

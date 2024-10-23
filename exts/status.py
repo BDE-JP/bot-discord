@@ -2,6 +2,8 @@
 # Python 3.10
 # ----------------------------------------------------------------------------
 
+from ..__base__ import library_sn; discord = library_sn.discord
+
 
 class MangageStatusRole:
 
