@@ -2,6 +2,8 @@
 # Python 3.10
 # ----------------------------------------------------------------------------
 
+from ..__base__ import library_sn; discord = library_sn.discord
+
 
 async def verification(message, channel):
 
@@ -54,6 +56,7 @@ class Verification:
         ) = data
 
     async def accept(self, guild):
+
         database.users.identity(
             (self.first_name, self.last_name, self.identifiant, self.user_id)
         )
@@ -64,6 +67,21 @@ class Verification:
             f"[✅] - <@{self.user_id}>"
             + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
         )
+
+        await self.update_message(guild, description)
+
+    async def deny(self, guild):
+
+        database.verifications.remove(self.id)
+
+        description = (
+            f"[❌] - <@{self.user_id}>"
+            + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
+        )
+
+        await self.update_message(guild, description)
+
+    async def update_message(self, guild, description:str):
 
         channel = guild.get_channel(self.channel_id) 
         message = channel.get_partial_message(self.message_id)
