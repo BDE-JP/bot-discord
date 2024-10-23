@@ -166,6 +166,6 @@ clients/__init__.py
 commands/__init__.py
 api/__init__.py
 database/__init__.py
-database/database.db
+*.db
 ignores/*
 __base__.py
