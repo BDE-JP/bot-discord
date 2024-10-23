@@ -29,6 +29,8 @@ class Client(discord.Client):
     def __init__(self):
         super().__init__(fetch_offline_members=False, intents=intents)
 
+        self.manage_status_role = None 
+
     async def on_ready(self):
 
         elo_hour = None
@@ -99,7 +101,8 @@ class Client(discord.Client):
 
     async def on_presence_update(self, before, after):
 
-        await self.manage_status_role.update(after.activity, after)
+        if self.manage_status_role:
+            await self.manage_status_role.update(after.activity, after)
 
     async def on_raw_reaction_add(self, payload):
 

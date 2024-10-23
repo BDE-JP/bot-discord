@@ -14,7 +14,11 @@ class MangageStatusRole:
         self.ROLE_MINECRAFT = client.guild.get_role(1221994436058153032)
 
         self.ROLES = [
-            ROLE_ECOUTE, ROLE_JOUE, ROLE_DIFFUSE, ROLE_ECHECS, ROLE_MINECRAFT
+            self.ROLE_ECOUTE, 
+            self.ROLE_JOUE, 
+            self.ROLE_DIFFUSE, 
+            self.ROLE_ECHECS, 
+            self.ROLE_MINECRAFT
         ]
 
     async def update(self, activity, member):

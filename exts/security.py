@@ -4,6 +4,8 @@
 
 from ..__base__ import library_sn; discord = library_sn.discord
 
+from .. import database
+
 
 async def verification(message, channel):
 
