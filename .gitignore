@@ -160,3 +160,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Gestbots
+clients/__init__.py
+commands/__init__.py
+api/__init__.py
+database/__init__.py
+database/database.db
+ignores/*
+__base__.py

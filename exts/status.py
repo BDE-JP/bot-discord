@@ -5,7 +5,7 @@
 
 class MangageStatusRole:
 
-    async def __init__(self, client):
+    def __init__(self, client):
 
         self.ROLE_ECOUTE = client.guild.get_role(1218643648762085488)
         self.ROLE_JOUE = client.guild.get_role(1218690409539043349)
