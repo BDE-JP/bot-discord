@@ -5,6 +5,14 @@
 from ..__base__ import library_sn; discord = library_sn.discord
 
 
+class Echecs:
+    pass
+
+
+class Minecraft:
+    pass
+
+
 class MangageStatusRole:
 
     def __init__(self, client):

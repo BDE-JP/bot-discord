@@ -16,14 +16,6 @@ from ..exts import security
 intents = discord.Intents.all()
 
 
-class Echecs:
-    pass
-
-
-class Minecraft:
-    pass
-
-
 class Client(discord.Client):
 
     def __init__(self):
@@ -88,7 +80,7 @@ class Client(discord.Client):
                         + f"{'connecté' if is_online else 'déconnecté'}"
                     )
                     await self.manage_status_role.update(
-                        Minecraft if is_online else None,
+                        status.Minecraft if is_online else None,
                         guild.get_member(user.discord_id)
                     )
                     await channel.send(
