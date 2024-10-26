@@ -97,6 +97,8 @@ class Client(discord.Client):
         if self.manage_status_role:
             await self.manage_status_role.update(after.activity, after)
 
+        await adherents.update(after)
+
     async def on_raw_reaction_add(self, payload):
 
         if payload.guild_id != self.guild.id:
@@ -124,7 +126,3 @@ class Client(discord.Client):
             await security.verification(message, VERIFICATION_CHANNEL)
         else:
             await commands.get(self, message, 'discord', prefixs=['!'])
-
-        if adherents.is_adherent(message.author.global_name):
-            role_ADHERENT = self.guild.get_role(1252285875883348051)
-            await message.author.add_roles(role_ADHERENT)

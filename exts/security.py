@@ -20,7 +20,7 @@ async def verification(message, channel):
     if not identifiant:
         description = (
             "Merci d'indiquer vos informations sous cette forme :"
-            + "\nNOM Présom NumeroEtudiant"
+            + "\n**`NOM Prénom NumeroEtudiant`**"
             + "\n_(Ex : POIRE Pomme 22348576894)_"
         )
         await (await message.channel.send(description)).delete(delay=30)
