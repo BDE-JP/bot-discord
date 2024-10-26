@@ -12,14 +12,22 @@ async def verification(message, channel):
     try: prenom, nom, identifiant = message.content.split(' ')
     except:
         prenom = nom = identifiant = None
+    else:
+        nom = nom.upper()
 
     await message.delete()
 
     if not identifiant:
+        description = (
+            "Merci d'indiquer vos informations sous cette forme :"
+            + "\nNOM Présom NumeroEtudiant"
+            + "\n_(Ex : POIRE Pomme 22348576894)_"
+        )
+        await (await message.channel.send(description)).delete(delay=30)
         return
 
     description = (
-        f"[ ] - <@{message.author.id}>"
+        f"`[⌛]` - <@{message.author.id}>"
         + f"\n{nom.upper()} {prenom} n°{identifiant}"
     )
 
@@ -66,9 +74,15 @@ class Verification:
         database.verifications.remove(self.id)
 
         description = (
-            f"[✅] - <@{self.user_id}>"
+            f"`[✅]` - <@{self.user_id}>"
             + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
         )
+
+        member = guild.get_member(self.user_id)
+        role_EXISTE = guild.get_role(1218642619614105740)
+
+        if role_EXISTE not in member.roles:
+            await member.add_roles(role_EXISTE)
 
         await self.update_message(guild, description)
 
@@ -77,7 +91,7 @@ class Verification:
         database.verifications.remove(self.id)
 
         description = (
-            f"[❌] - <@{self.user_id}>"
+            f"`[❌]` - <@{self.user_id}>"
             + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
         )
 
