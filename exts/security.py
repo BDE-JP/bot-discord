@@ -9,9 +9,9 @@ from .. import database
 
 async def verification(message, channel):
 
-    try: prenom, nom, identifiant = message.content.split(' ')
+    try: nom, prenom, identifiant = message.content.split(' ')
     except:
-        prenom = nom = identifiant = None
+        nom = prenom = identifiant = None
     else:
         nom = nom.upper()
 
@@ -39,7 +39,7 @@ async def verification(message, channel):
     await msg.add_reaction("❌")
 
     database.verifications.add(
-        (msg.channel.id, msg.id, message.author.id, prenom, nom, identifiant)
+        (msg.channel.id, msg.id, message.author.id, nom, prenom, identifiant)
     )
 
 
