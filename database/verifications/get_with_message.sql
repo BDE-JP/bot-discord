@@ -3,8 +3,8 @@ SELECT
 	channel_id,
 	message_id,
 	user_id,
-	first_name,
 	last_name,
+	first_name,
 	identifier
 FROM verifications
 WHERE message_id = ?

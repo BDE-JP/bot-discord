@@ -27,11 +27,16 @@ async def verification(message, channel):
         return
 
     description = (
-        f"`[⌛]` - <@{message.author.id}>"
-        + f"\n{nom.upper()} {prenom} n°{identifiant}"
+        "`[✅]` Vos informations ont été enregistrées."
+        + "\nVeuillez maintenant attendre qu'une personne les valides."
     )
 
-    await (await message.channel.send("✅")).delete(delay=30)
+    await (await message.channel.send(description)).delete(delay=30)
+
+    description = (
+        f"`[⌛]` - <@{message.author.id}>"
+        + f"\n{nom} {prenom} n°{identifiant}"
+    )
 
     msg = await channel.send(embed=discord.Embed(description=description))
 
@@ -60,22 +65,22 @@ class Verification:
             self.channel_id,
             self.message_id,
             self.user_id,
-            self.first_name,
             self.last_name,
+            self.first_name,
             self.identifiant
         ) = data
 
     async def accept(self, guild):
 
         database.users.identity(
-            (self.first_name, self.last_name, self.identifiant, self.user_id)
+            (self.last_name, self.first_name, self.identifiant, self.user_id)
         )
 
         database.verifications.remove(self.id)
 
         description = (
             f"`[✅]` - <@{self.user_id}>"
-            + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
+            + f"\n{self.last_name} {self.first_name} n°{self.identifiant}"
         )
 
         member = guild.get_member(self.user_id)
@@ -92,7 +97,7 @@ class Verification:
 
         description = (
             f"`[❌]` - <@{self.user_id}>"
-            + f"\n{self.last_name.upper()} {self.first_name} n°{self.identifiant}"
+            + f"\n{self.last_name} {self.first_name} n°{self.identifiant}"
         )
 
         await self.update_message(guild, description)
