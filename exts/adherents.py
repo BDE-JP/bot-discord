@@ -36,7 +36,10 @@ async def update(member):
     if not role_ADHERENT:
         return
 
-    if is_adherent(member.global_name):
+    if not member.name:
+        return
+
+    if is_adherent(member.name):
         if role_ADHERENT not in member.roles:
             await member.add_roles(role_ADHERENT)
     else:
