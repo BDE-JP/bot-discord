@@ -26,6 +26,16 @@ class Client(discord.Client):
 
     async def on_ready(self):
 
+        self.manage_slash_commands = manage.slash_commands.ManagerSlashCommands(
+            self.bot__.data.params["application_id"],
+            self.bot__.data.params["token"]
+        )
+
+        for module in commands.modules.values():
+            await self.manage_slash_commands.register_application_commands(
+                module.commands
+            )
+
         elo_hour = None
         menu_ru_send = False
 
