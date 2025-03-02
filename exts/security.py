@@ -7,34 +7,10 @@ from ..__base__ import library_sn; discord = library_sn.discord
 from .. import database
 
 
-async def verification(message, channel):
-
-    try: nom, prenom, identifiant = message.content.split(' ')
-    except:
-        nom = prenom = identifiant = None
-    else:
-        nom = nom.upper()
-
-    await message.delete()
-
-    if not identifiant:
-        description = (
-            "Merci d'indiquer vos informations sous cette forme :"
-            + "\n**`NOM Prénom NumeroEtudiant`**"
-            + "\n_(Ex : POIRE Pomme 22348576894)_"
-        )
-        await (await message.channel.send(description)).delete(delay=30)
-        return
+async def send_message_confirm(channel, author_id, nom, prenom, identifiant):
 
     description = (
-        "`[✅]` Vos informations ont été enregistrées."
-        + "\nVeuillez maintenant attendre qu'une personne les valides."
-    )
-
-    await (await message.channel.send(description)).delete(delay=30)
-
-    description = (
-        f"`[⌛]` - <@{message.author.id}>"
+        f"`[⌛]` - <@{author_id}>"
         + f"\n{nom} {prenom} n°{identifiant}"
     )
 
@@ -44,7 +20,7 @@ async def verification(message, channel):
     await msg.add_reaction("❌")
 
     database.verifications.add(
-        (msg.channel.id, msg.id, message.author.id, nom, prenom, identifiant)
+        (msg.channel.id, msg.id, author_id, nom, prenom, identifiant)
     )
 
 

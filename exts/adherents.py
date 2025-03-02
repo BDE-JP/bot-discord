@@ -22,11 +22,40 @@ NAMES_ADHERENTS = [
     "__susanoo",
     "toutoule_powpow",
     "nina.0410",
+    "thefox580",
+    "dabreton",
+    "anthymefgn",
+    "simp4koko",
+    "emmyos__",
+    "ShuriKeen3_37526",
+    "oceanemuller",
+    "Gwen157",
+    "leira_de_lorea",
+    "Toutoule_powpow",
+    "Haokai",
+    "_kekra_",
+    "thesurvivor64",
+    "xelouuu",
+    "michiland",
+    "r3draf",
+    "mat_m_",
+    "kureteiyu",
+    "eva1812",
+    "etandesdeschoses",
+    "camillekst_",
+    "c.clec",
+    "danhheloise",
+    "oceane.lcd",
+    "gsuisnoa",
+    "julpija",
+    "dawadinho",
+    "vikus_vie",
+    "lomolosau",
 ]
 
 
 def is_adherent(name:str) -> bool:
-    return name in NAMES_ADHERENTS
+    return name.lower() in [n.lower() for n in NAMES_ADHERENTS]
 
 
 async def update(member):

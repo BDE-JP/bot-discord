@@ -6,20 +6,49 @@ import requests
 import lichess.api
 
 from ..__base__ import manage
+from ..__base__ import library_sn; discord = library_sn.discord
 from ..exts import users
 
 
 Command = manage.commands.Command
 commands = manage.commands.Commands()
 
+Options = manage.slash_commands.Options
 
-@commands.add
-def ping(ctx):
+
+@commands.add()
+async def ping(ctx):
     ctx.response(description="pong")
 
 
-@commands.add
-def pseudo(ctx, domain:str, name:str):
+@commands.add().set_slash_options(
+    Options()
+    .string("nom")
+    .string("prenom")
+    .string("identifiant")
+)
+async def identification(ctx, nom:str, prenom:str, identifiant:str):
+
+    VERIFICATION_CHANNEL = ctx.guild.get_channel(1295495398542282762)
+
+    await users.send_message_confirm(
+        VERIFICATION_CHANNEL, ctx.author.id, nom, prenom, identifiant
+    )
+
+    description = (
+        "`[✅]` Vos informations ont été enregistrées."
+        + "\nVeuillez maintenant attendre qu'une personne les valides."
+    )
+
+    ctx.response(description=description, ephemeral=True)
+
+
+@commands.add(
+    Options()
+    .string("domain")
+    .string("pseudo")
+)
+async def pseudo(ctx, domain:str, name:str):
     user = users.get(ctx.author.id)
 
     if domain == "lichess" and user and lichess.api.user(name):
@@ -37,8 +66,8 @@ def pseudo(ctx, domain:str, name:str):
         )
 
 
-@commands.add
-def minecraft(ctx):
+@commands.add()
+async def minecraft(ctx):
 
     response = requests.get(
         "https://api.mcstatus.io/v2/status/java/5.196.4.146"
