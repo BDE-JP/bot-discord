@@ -37,15 +37,15 @@ class Client(discord.Client):
             ### Menu RU
 
             date = datetime.datetime.utcnow()
-            
-            if date.hour == 8 and data.isoweekday() not in [6, 7]:
+
+            if date.hour == 8 and date.isoweekday() not in [6, 7]:
                 if not menu_ru_send:
                     try: text = menu_ru.get_text()
                     except:
                         pass
                     else:
                         menu_ru_send = True
-                        channel = guild.get_channel(1282350742379692042)
+                        channel = self.guild.get_channel(1334677225445785610)
                         await channel.send(embed=discord.Embed(
                             description = \
                                 f"_{date.strftime('%d/%m/%Y')}_ - {text}"
@@ -55,11 +55,11 @@ class Client(discord.Client):
 
             ### Elo Lichess
 
-            maj:list = users.get_new_elo() if date.hour != elo_hour else None
+            maj:list = None # users.get_new_elo() if date.hour != elo_hour else None
 
             if maj:
                 elo_hour = date.hour
-                channel = guild.get_channel(1218681676771885117)
+                channel = self.guild.get_channel(1218681676771885117)
                 for user, domain, old, new in maj:
                     description = (
                         f"{'📈' if old < new else '📉'}"
@@ -74,7 +74,7 @@ class Client(discord.Client):
             maj:list = users.online_minecraft()
 
             if maj:
-                channel = guild.get_channel(1221820637837000704)
+                channel = self.guild.get_channel(1221820637837000704)
                 for user, is_online in maj:
                     description = (
                         f"{user.minecraft_pseudo} s'est "
