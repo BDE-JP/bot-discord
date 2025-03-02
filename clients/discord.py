@@ -119,10 +119,4 @@ class Client(discord.Client):
         if message.author.bot:
             return
 
-        IDENTIFICATION_CHANNEL = self.guild.get_channel(1296031913836019712)
-        VERIFICATION_CHANNEL = self.guild.get_channel(1295495398542282762)
-
-        if message.channel == IDENTIFICATION_CHANNEL:
-            await security.verification(message, VERIFICATION_CHANNEL)
-        else:
-            await commands.get(self, message, 'discord', prefixs=['!'])
+        await commands.get(self, message, 'discord', prefixs=['!'])
