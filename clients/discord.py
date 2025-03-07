@@ -8,6 +8,7 @@ import datetime
 from ..__base__ import manage
 from ..__base__ import library_sn; discord = library_sn.discord
 from .. import commands
+from ..exts import musics
 from ..exts import users
 from ..exts import status
 from ..exts import menu_ru
@@ -39,6 +40,7 @@ class Client(discord.Client):
 
         elo_hour = None
         menu_ru_send = False
+        music_send = False
 
         self.guild = self.get_guild(1217518211373994014)
         self.manage_status_role = status.MangageStatusRole(self)
@@ -64,6 +66,22 @@ class Client(discord.Client):
             else:
                 menu_ru_send = False
 
+            ### Musique du jour
+
+            if date.hour == 0:
+                if not music_send:
+                    try: description = musics.today()
+                    except:
+                        pass
+                    else:
+                        music_send = True
+                        channel = self.guild.get_channel(1347698675257704498)
+                        await channel.send(embed=discord.Embed(
+                            description = description
+                        ))
+            else:
+                music_send = False
+
             ### Elo Lichess
 
             maj:list = None # users.get_new_elo() if date.hour != elo_hour else None
@@ -82,7 +100,7 @@ class Client(discord.Client):
 
             ### Minecraft
 
-            maj:list = users.online_minecraft()
+            maj:list = None # users.online_minecraft()
 
             if maj:
                 channel = self.guild.get_channel(1221820637837000704)
@@ -107,6 +125,9 @@ class Client(discord.Client):
 
         if self.manage_status_role:
             await self.manage_status_role.update(after.activity, after)
+
+        if isinstance(after.activity, discord.Spotify):
+            musics.add_music(after, after.activity)
 
         await adherents.update(after)
 

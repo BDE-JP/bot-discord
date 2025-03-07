@@ -22,3 +22,16 @@ CREATE TABLE IF NOT EXISTS verifications
     last_name TEXT,
     identifier TEXT
 );
+
+
+CREATE TABLE IF NOT EXISTS musics 
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    user_name TEXT,
+    title TEXT,
+    artists TEXT,
+    album TEXT,
+    album_cover_url TEXT,
+    track_url TEXT
+);
