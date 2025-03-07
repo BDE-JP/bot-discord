@@ -8,7 +8,7 @@ import lichess.api
 from ..__base__ import manage
 from ..__base__ import library_sn; discord = library_sn.discord
 from ..exts import users
-
+from ..exts import security
 
 Command = manage.commands.Command
 commands = manage.commands.Commands()
@@ -31,7 +31,7 @@ async def identification(ctx, nom:str, prenom:str, identifiant:str):
 
     VERIFICATION_CHANNEL = ctx.guild.get_channel(1295495398542282762)
 
-    await users.send_message_confirm(
+    await security.send_message_confirm(
         VERIFICATION_CHANNEL, ctx.author.id, nom, prenom, identifiant
     )
 
@@ -43,7 +43,7 @@ async def identification(ctx, nom:str, prenom:str, identifiant:str):
     ctx.response(description=description, ephemeral=True)
 
 
-@commands.add(
+@commands.add().set_slash_options(
     Options()
     .string("domain")
     .string("pseudo")
