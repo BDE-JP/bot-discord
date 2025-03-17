@@ -70,15 +70,13 @@ class Client(discord.Client):
 
             if date.hour == 0:
                 if not music_send:
-                    try: description = musics.today()
+                    try: embed = musics.today()
                     except:
                         pass
                     else:
                         music_send = True
                         channel = self.guild.get_channel(1347698675257704498)
-                        await channel.send(embed=discord.Embed(
-                            description = description
-                        ))
+                        await channel.send(embed=embed)
             else:
                 music_send = False
 
