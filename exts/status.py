@@ -57,3 +57,22 @@ class MangageStatusRole:
         for role in ROLES:
             if role in member.roles:
                 await member.remove_roles(role)
+
+
+def sort_activities(activities:list) -> list:
+
+    data = []
+
+    for element in (
+            discord.Streaming,
+            discord.Game,
+            discord.Spotify,
+            discord.Activity,
+            Echecs,
+            Minecraft
+        ):
+        for activity in activities:
+            if isinstance(activity, element):
+                data.append(activity)
+
+    return data
