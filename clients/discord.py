@@ -150,6 +150,11 @@ class Client(discord.Client):
         elif str(payload.emoji) == "❌":
             await verification.deny(self.guild)
 
+    async def on_interaction(self, interaction: discord.Interaction):
+
+        if interaction.type == discord.InteractionType.application_command:
+            await commands.get(self, 'discord', interaction=interaction)
+
     async def on_message(self, message):
 
         if message.author.bot:
