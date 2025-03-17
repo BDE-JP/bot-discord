@@ -6,15 +6,11 @@ from ..__base__ import library_sn; discord = library_sn.discord
 
 
 class Echecs:
-    @property
-    def type(self):
-        return Echecs
-    
+    pass
+
 
 class Minecraft:
-    @property
-    def type(self):
-        return Minecraft
+    pass
 
 
 class MangageStatusRole:
@@ -42,7 +38,17 @@ class MangageStatusRole:
         role_added = None
 
         if activity:
-            if activity.type == discord.ActivityType.playing:
+            if isinstance(activity, discord.Streaming):
+                role_added = self.ROLE_DIFFUSE
+            elif isinstance(activity, discord.Game):
+                role_added = self.ROLE_JOUE
+            elif isinstance(activity, discord.Spotify):
+                role_added = self.ROLE_ECOUTE
+            elif isinstance(activity, Echecs):
+                role_added = self.ROLE_ECHECS
+            elif isinstance(activity, Minecraft):
+                role_added = self.ROLE_MINECRAFT
+            elif activity.type == discord.ActivityType.playing:
                 role_added = self.ROLE_JOUE
             elif activity.type == discord.ActivityType.listening:
                 role_added = self.ROLE_ECOUTE
@@ -50,10 +56,6 @@ class MangageStatusRole:
                 role_added = self.ROLE_DIFFUSE
             elif activity.type == discord.ActivityType.watching:
                 role_added = self.ROLE_REGARDE
-            elif activity.type == Echecs:
-                role_added = self.ROLE_ECHECS
-            elif activity.type == Minecraft:
-                role_added = self.ROLE_MINECRAFT
 
         ROLES = list(self.ROLES) # Clone
 
