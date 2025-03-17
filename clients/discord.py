@@ -4,6 +4,8 @@
 
 import asyncio
 import datetime
+import logging
+import traceback
 
 from ..__base__ import manage
 from ..__base__ import library_sn; discord = library_sn.discord
@@ -15,6 +17,7 @@ from ..exts import menu_ru
 from ..exts import security
 from ..exts import adherents
 
+logger = logging.getLogger(__name__)
 
 intents = discord.Intents.all()
 
@@ -27,6 +30,8 @@ class Client(discord.Client):
         self.manage_status_role = None 
 
     async def on_ready(self):
+
+        print("BOt BDE-JP login !")
 
         self.manage_slash_commands = manage.slash_commands.ManagerSlashCommands(
             self.bot__.data.params["application_id"],
@@ -51,11 +56,11 @@ class Client(discord.Client):
 
             date = datetime.datetime.utcnow()
 
-            if date.hour == 8 and date.isoweekday() not in [6, 7]:
+            if date.hour == 9 and date.isoweekday() not in [6, 7]:
                 if not menu_ru_send:
                     try: text = menu_ru.get_text()
                     except:
-                        pass
+                        logger.error(traceback.format_exc())
                     else:
                         menu_ru_send = True
                         channel = self.guild.get_channel(1334677225445785610)
@@ -68,17 +73,16 @@ class Client(discord.Client):
 
             ### Musique du jour
 
-            if date.hour == 0:
+            if date.hour == 23:
                 if not music_send:
-                    try: description = musics.today()
+                    try: embed = musics.today()
                     except:
-                        pass
+                        logger.error(traceback.format_exc())
                     else:
                         music_send = True
                         channel = self.guild.get_channel(1347698675257704498)
-                        await channel.send(embed=discord.Embed(
-                            description = description
-                        ))
+                        msg = await channel.send(embed=embed)
+                        await msg.add_reaction("🤍")
             else:
                 music_send = False
 
@@ -126,8 +130,8 @@ class Client(discord.Client):
         if self.manage_status_role:
             await self.manage_status_role.update(after.activity, after)
 
-        if isinstance(after.activity, discord.Spotify):
-            musics.add_music(after, after.activity)
+        if isinstance(before.activity, discord.Spotify):
+            musics.add_music(before, before.activity)
 
         await adherents.update(after)
 
@@ -151,4 +155,4 @@ class Client(discord.Client):
         if message.author.bot:
             return
 
-        await commands.get(self, message, 'discord', prefixs=['!'])
+        await commands.get(self, "discord", message=message, prefixs=['!'])
