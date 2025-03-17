@@ -114,7 +114,7 @@ class Client(discord.Client):
                         + f"{'connecté' if is_online else 'déconnecté'}"
                     )
                     await self.manage_status_role.update(
-                        status.Minecraft if is_online else None,
+                        status.Minecraft() if is_online else None,
                         guild.get_member(user.discord_id)
                     )
                     await channel.send(

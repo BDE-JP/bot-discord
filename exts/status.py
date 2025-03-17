@@ -6,11 +6,15 @@ from ..__base__ import library_sn; discord = library_sn.discord
 
 
 class Echecs:
-    pass
-
+    @property
+    def type(self):
+        return Echecs
+    
 
 class Minecraft:
-    pass
+    @property
+    def type(self):
+        return Minecraft
 
 
 class MangageStatusRole:
@@ -20,6 +24,7 @@ class MangageStatusRole:
         self.ROLE_ECOUTE = client.guild.get_role(1218643648762085488)
         self.ROLE_JOUE = client.guild.get_role(1218690409539043349)
         self.ROLE_DIFFUSE = client.guild.get_role(1219025474173272174)
+        self.ROLE_REGARDE = client.guild.get_role(1348973148032471050)
         self.ROLE_ECHECS = client.guild.get_role(1218881775594373160)
         self.ROLE_MINECRAFT = client.guild.get_role(1221994436058153032)
 
@@ -27,7 +32,8 @@ class MangageStatusRole:
             self.ROLE_ECOUTE, 
             self.ROLE_JOUE, 
             self.ROLE_DIFFUSE, 
-            self.ROLE_ECHECS, 
+            self.ROLE_REGARDE,
+            self.ROLE_ECHECS,
             self.ROLE_MINECRAFT
         ]
 
@@ -36,15 +42,17 @@ class MangageStatusRole:
         role_added = None
 
         if activity:
-            if isinstance(activity, (discord.Game, discord.Activity)):
+            if activity.type == discord.ActivityType.playing:
                 role_added = self.ROLE_JOUE
-            elif isinstance(activity, discord.Spotify):
+            elif activity.type == discord.ActivityType.listening:
                 role_added = self.ROLE_ECOUTE
-            elif isinstance(activity, discord.Streaming):
+            elif activity.type == discord.ActivityType.streaming:
                 role_added = self.ROLE_DIFFUSE
-            elif isinstance(activity, Echecs):
+            elif activity.type == discord.ActivityType.watching:
+                role_added = self.ROLE_REGARDE
+            elif activity.type == Echecs:
                 role_added = self.ROLE_ECHECS
-            elif isinstance(activity, Minecraft):
+            elif activity.type == Minecraft:
                 role_added = self.ROLE_MINECRAFT
 
         ROLES = list(self.ROLES) # Clone
@@ -67,9 +75,9 @@ def sort_activities(activities:list) -> list:
             discord.Streaming,
             discord.Game,
             discord.Spotify,
-            discord.Activity,
             Echecs,
-            Minecraft
+            Minecraft,
+            discord.Activity
         ):
         for activity in activities:
             if isinstance(activity, element):
