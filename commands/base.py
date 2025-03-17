@@ -23,9 +23,9 @@ async def ping(ctx):
 
 @commands.add().set_slash_options(
     Options()
-    .string("nom")
-    .string("prenom")
-    .string("identifiant")
+    .string("Nom")
+    .string("Prenom")
+    .string("Numero", "Votre numero etudiant.")
 )
 async def identification(ctx, nom:str, prenom:str, identifiant:str):
 

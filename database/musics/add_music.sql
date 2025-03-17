@@ -1,4 +1,4 @@
-INSERT OR IGNORE TO musics (
+INSERT OR IGNORE INTO musics (
     user_id,
     user_name,
     title,
