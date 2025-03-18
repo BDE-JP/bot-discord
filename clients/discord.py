@@ -128,7 +128,7 @@ class Client(discord.Client):
     async def on_presence_update(self, before, after):
 
         if self.manage_status_role:
-            activity = status.sort_activities(after.activities or [None])[0]
+            activity = (status.sort_activities(after.activities) or [None])[0]
             await self.manage_status_role.update(activity, after)
 
         if isinstance(before.activity, discord.Spotify):

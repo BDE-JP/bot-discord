@@ -27,7 +27,7 @@ async def ping(ctx):
     .string("prenom")
     .string("numero", "Votre numero etudiant.")
 )
-async def identification(ctx, nom:str, prenom:str, identifiant:str):
+async def identification(ctx, nom:str, prenom:str, numero:str):
 
     VERIFICATION_CHANNEL = ctx.guild.get_channel(1295495398542282762)
 
