@@ -32,7 +32,7 @@ async def identification(ctx, nom:str, prenom:str, numero:str):
     VERIFICATION_CHANNEL = ctx.guild.get_channel(1295495398542282762)
 
     await security.send_message_confirm(
-        VERIFICATION_CHANNEL, ctx.author.id, nom, prenom, identifiant
+        VERIFICATION_CHANNEL, ctx.author.id, nom, prenom, numero
     )
 
     description = (
